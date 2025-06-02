@@ -1,3 +1,4 @@
+"""
 MIT License
 
 Copyright (c) 2025-present aqur1n
@@ -19,3 +20,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+"""
+
+
+import asyncio
+from functools import partial
+from typing import Any, Callable
+
+from ..worker import Worker
+
+
+class PartialWorker(Worker):
+    def execute(self, fun) -> Any:
+        return fun()
+    
+    def put_job(self, func: Callable, *args, **kwargs) -> asyncio.Future:
+        return super().put_job(partial(func, *args, **kwargs))

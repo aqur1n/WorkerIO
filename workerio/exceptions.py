@@ -1,3 +1,4 @@
+"""
 MIT License
 
 Copyright (c) 2025-present aqur1n
@@ -19,3 +20,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+"""
+
+
+class WorkerioException(Exception): ...
+
+class WorkersNotFound(WorkerioException):
+    def __init__(self, worker_type) -> None:
+        super().__init__(f"No active workers {worker_type} were found")
+
+class SuitableWorkerNotFound(WorkerioException):
+    def __init__(self) -> None:
+        super().__init__("Unable to find a suitable worker")
+
+class WorkerAlreadyPresent(WorkerioException):
+    def __init__(self) -> None:
+        super().__init__("This worker is already on the worker's list")
