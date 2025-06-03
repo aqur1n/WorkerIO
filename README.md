@@ -7,6 +7,10 @@ The result of the job is returned using `asyncio.Future`.
 > [!WARNING]
 > Since everything will be executed in another thread, use thread-safe functions. Do not modify files unless you are sure they are not open in another worker.
 
+### Installing
+> [!NOTE]
+> TODO
+
 ### Basic examples
 ```py
 import workerio
@@ -58,7 +62,3 @@ class MyManager(workerio.Manager):
 manager = MyManager()
 
 ```
-
-## Installing
-> [!NOTE]
-> TODO
