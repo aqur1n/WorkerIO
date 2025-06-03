@@ -1,4 +1,7 @@
 # WorkerIO
+![PyPI - Version](https://img.shields.io/pypi/v/workerio?style=for-the-badge&logo=pypi&logoColor=white)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/workerio?style=for-the-badge&logo=python&logoColor=white)
+
 A tool that allows you to create your own workers and distribute work among them.
 
 Each worker creates its own thread in which it will fetch jobs from the `queue.SimpleQueue` queue and execute them in its `execute` method.
