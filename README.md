@@ -8,8 +8,13 @@ The result of the job is returned using `asyncio.Future`.
 > Since everything will be executed in another thread, use thread-safe functions. Do not modify files unless you are sure they are not open in another worker.
 
 ### Installing
-> [!NOTE]
-> TODO
+```console
+# Linux/macOS
+python3 -m pip install -U workerio
+
+# Windows
+py -3 -m pip install -U workerio
+```
 
 ### Basic examples
 ```py
