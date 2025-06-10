@@ -25,14 +25,22 @@ SOFTWARE.
 
 class WorkerioException(Exception): ...
 
-class WorkersNotFound(WorkerioException):
+
+class ManagerException(WorkerioException): ...
+
+class WorkersNotFound(ManagerException):
     def __init__(self, worker_type) -> None:
         super().__init__(f"No active workers {worker_type} were found")
 
-class SuitableWorkerNotFound(WorkerioException):
+class SuitableWorkerNotFound(ManagerException):
     def __init__(self) -> None:
         super().__init__("Unable to find a suitable worker")
 
-class WorkerAlreadyPresent(WorkerioException):
+class WorkerAlreadyPresent(ManagerException):
     def __init__(self) -> None:
         super().__init__("This worker is already on the worker's list")
+
+
+class WorkerException(WorkerioException): ...
+
+class WorkerCouldNotAcceptJob(WorkerException): ...
