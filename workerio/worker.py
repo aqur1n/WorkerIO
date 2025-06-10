@@ -28,6 +28,8 @@ from queue import SimpleQueue
 from threading import Thread
 from typing import Any, Generator
 
+from .exceptions import WorkerException, WorkerCouldNotAcceptJob
+
 
 def set_result(future: asyncio.Future, result: Any) -> None:
     """Set a future result if this has not already been done. """
@@ -118,19 +120,46 @@ class Worker(Thread):
         self._running = False
 
     def start(self) -> None:
-        """Start the worker. """
+        """Start the worker. 
+
+        Raises
+        ------
+        :exc:`WorkerException`
+            The worker is already running.
+        """
+        if self._running:
+            raise WorkerException("The worker is already running.")
+
         self._running = True
         super().start()
     
     async def stop(self) -> None:
-        """Stop the worker and waits for all work to be completed. """
+        """Stop the worker and waits for all work to be completed.
+
+        Raises
+        ------
+        :exc:`WorkerCouldNotAcceptJob`
+            The worker is not working and cannot be stopped.
+        """
+        if not self._running:
+            raise WorkerCouldNotAcceptJob("The worker is not working.")
+        
         s = _StopRunningAsyncSentinel()
         self._tx.put_nowait(s)
 
         await s
 
     def stop_nowait(self) -> _StopRunningAsyncSentinel:
-        """Stop the worker (does not wait for all work to be completed). """
+        """Stop the worker (does not wait for all work to be completed). 
+        
+        Raises
+        ------
+        :exc:`WorkerCouldNotAcceptJob`
+            The worker is not working and cannot be stopped.
+        """
+        if not self._running:
+            raise WorkerCouldNotAcceptJob("The worker is not working.")
+        
         s = _StopRunningAsyncSentinel()
         self._tx.put_nowait(s)
 
@@ -138,6 +167,10 @@ class Worker(Thread):
     
     def put_job(self, *args, **kwargs) -> asyncio.Future:
         """Add a job to the job queue. 
+
+        .. note::
+
+            The worker will accept work even when it is not running. Keep this in mind.
         
         Parameters
         ----------
